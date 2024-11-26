@@ -1,0 +1,13 @@
+name: Production Branches CI
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  run-commands:
+    uses: ./.github/workflows/run-commands.yml
+    with:
+      branch: ${{ github.ref_name }}
