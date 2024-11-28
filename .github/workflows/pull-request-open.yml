@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   run-commands:
-    # if: ${{ (github.head_ref || github.ref_name) != 'development' }}
+    if: ${{ (github.head_ref || github.ref_name) != 'development' }}
     uses: ./.github/workflows/run-commands.yml
     with:
       branch: ${{ github.head_ref || github.ref_name }}
