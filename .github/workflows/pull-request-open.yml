@@ -8,13 +8,3 @@ jobs:
     uses: ./.github/workflows/run-commands.yml
     with:
       branch: ${{ github.head_ref || github.ref_name }}
-
-  echo-branch:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Echo head ref
-      run: echo ${{ github.head_ref }}
-
-    - name: Echo ref name
-      run: echo ${{ github.ref_name }} 
