@@ -3,7 +3,7 @@ name: Pull Request CI
 on: pull_request
 
 jobs:
-  run-tests:
+  run-commands:
     if: ${{ (github.head_ref || github.ref_name) != 'development' }}
     uses: ./.github/workflows/run-commands.yml
     with:
