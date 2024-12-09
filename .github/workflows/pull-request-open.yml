@@ -8,3 +8,6 @@ jobs:
     uses: ./.github/workflows/run-commands.yml
     with:
       branch: ${{ github.head_ref || github.ref_name }}
+
+  check-fixups:
+    uses: ./.github/workflows/check-fixups.yml
