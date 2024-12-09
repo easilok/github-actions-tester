@@ -9,16 +9,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Set up Node
-      uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        fetch-depth: 0
 
     - name: Prevent Fixup Commits
       env:
         TARGET_BRANCH: ${{ github.base_ref }}
+        # BASE_SHA=$(git merge-base origin/$TARGET_BRANCH HEAD)
       run: |
-        BASE_SHA=$(git merge-base origin/$TARGET_BRANCH HEAD)
-        git log $BASE_SHA..HEAD | grep -ie '^[[:blank:]]*fixup' && exit 1 || echo "No temporary commits found"
+        git log origin/$TARGET_BRANCH..HEAD | grep -ie '^[[:blank:]]*fixup' && exit 1 || echo "No temporary commits found"
 
