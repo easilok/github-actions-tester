@@ -1,0 +1,25 @@
+name: Check Daily Changes
+
+on: 
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+
+jobs:
+  check-daily-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      commits: ${{ steps.new-commits.outputs.commits }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Required to count the commits
+        ref: ${{ inputs.branch }}
+
+    - name: Get daily commits
+      id: new-commits
+      run: echo "commits=$(git log --oneline --since '30 minutes ago' | wc -l)" >> $GITHUB_OUTPUT
