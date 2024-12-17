@@ -1,0 +1,25 @@
+name: Daily Release Build
+
+on:
+  schedule:
+    - cron: '0,30 * * * *'
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      commits: ${{ steps.new-commits.outputs.commits }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to count the commits
+      - name: Get new commits
+        id: new-commits
+        run: echo "commits=$(git log --oneline --since '30 minutes ago' | wc -l)" >> $GITHUB_OUTPUT
+
+  run-commands:
+    if: ${{ needs.check-changes.outputs.commits > 0 }}
+    uses: ./.github/workflows/run-commands.yml
+    needs: check-changes
+    with:
+      branch: ${{ github.ref_name }}
