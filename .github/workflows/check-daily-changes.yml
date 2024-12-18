@@ -6,6 +6,10 @@ on:
       branch:
         type: string
         required: true
+    outputs:
+        commits:
+          description: "Last day commits"
+          value: ${{ jobs.check-daily-changes.outputs.commits }}
 
 jobs:
   check-daily-changes:

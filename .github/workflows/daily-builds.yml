@@ -2,20 +2,31 @@ name: Daily Release Build
 
 on:
   schedule:
-    - cron: '0 0/4 * * *'
+    - cron: '0/15 * * * *'
 
 jobs:
+  # check-changes:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     commits: ${{ steps.new-commits.outputs.commits }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0 # Required to count the commits
+  #     - name: Get new commits
+  #       id: new-commits
+  #       run: echo "commits=$(git log --oneline --since '4 hours ago' | wc -l)" >> $GITHUB_OUTPUT
   check-changes:
+    uses: ./.github/workflows/check-daily-changes.yml
+    with:
+      branch: ${{ github.ref_name }}
+
+  echo-outputs:
     runs-on: ubuntu-latest
-    outputs:
-      commits: ${{ steps.new-commits.outputs.commits }}
+    needs: check-changes
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Required to count the commits
-      - name: Get new commits
-        id: new-commits
-        run: echo "commits=$(git log --oneline --since '4 hours ago' | wc -l)" >> $GITHUB_OUTPUT
+      - name: echo commits
+        run: echo "${{ needs.check-changes.outputs.commits }}"
 
   run-commands:
     if: ${{ needs.check-changes.outputs.commits > 0 }}
