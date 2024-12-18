@@ -1,0 +1,26 @@
+name: 'Last day branch commits'
+description: 'Counts last day commits done in a repository branch'
+
+inputs:
+  branch:
+    description: "Branch to check"
+    required: true
+
+outputs:
+    commits:
+      description: "Last day commits"
+      value: ${{ steps.day-commits.outputs.commits }}
+
+runs:
+    using: composite
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ inputs.branch }}
+
+    - name: Get daily commits
+      id: day-commits
+      shell: bash
+      run: echo "commits=$(git log --oneline --since '30 minutes ago' | wc -l)" >> $GITHUB_OUTPUT

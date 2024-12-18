@@ -7,6 +7,15 @@ on:
       - development
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/check-daily-changes
+        name: Check repository changes
+
   run-commands:
     uses: ./.github/workflows/run-commands.yml
     with:

@@ -2,7 +2,8 @@ name: Daily Release Build
 
 on:
   schedule:
-    - cron: '0/15 * * * *'
+    # - cron: '0/15 * * * *'
+    - cron: '0 0/4 * * *'
 
 jobs:
   # check-changes:
@@ -16,10 +17,20 @@ jobs:
   #     - name: Get new commits
   #       id: new-commits
   #       run: echo "commits=$(git log --oneline --since '4 hours ago' | wc -l)" >> $GITHUB_OUTPUT
+
+  # check-changes:
+  #   uses: ./.github/workflows/check-daily-changes.yml
+  #   with:
+  #     branch: ${{ github.ref_name }}
+
   check-changes:
-    uses: ./.github/workflows/check-daily-changes.yml
-    with:
-      branch: ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check repository branch changes
+        uses: ./.github/actions/check-daily-changes
 
   echo-outputs:
     runs-on: ubuntu-latest
