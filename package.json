@@ -100,7 +100,7 @@
     "dompurify": "^3.0.8",
     "es6-promise": "^4.1.1",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.13.3",
+    "express": "^4.21.2",
     "file-saver": "^2.0.0",
     "html-react-parser": "^5.1.8",
     "iframe-resizer-react": "^1.1.0",
