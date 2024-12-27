@@ -1,0 +1,9 @@
+name: Manual Release Build
+
+on: workflow_dispatch
+
+jobs:
+  run-commands:
+    uses: ./.github/workflows/run-commands.yml
+    with:
+      branch: ${{ github.ref_name }}
