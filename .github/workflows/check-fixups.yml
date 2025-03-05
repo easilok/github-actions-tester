@@ -17,5 +17,5 @@ jobs:
         TARGET_BRANCH: ${{ github.base_ref }}
         # BASE_SHA=$(git merge-base origin/$TARGET_BRANCH HEAD)
       run: |
-        git log origin/$TARGET_BRANCH..HEAD | grep -ie '^[[:blank:]]*fixup' && exit 1 || echo "No temporary commits found"
+        git log origin/$TARGET_BRANCH..HEAD | grep -iE '^[[:blank:]]*fixup|wip|squash' && exit 1 || echo "No temporary commits found"
 
