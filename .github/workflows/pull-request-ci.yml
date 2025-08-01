@@ -18,7 +18,10 @@ jobs:
       - name: Run tests
         run: echo "Running tests..."
       - name: Check SHA
-        run: echo "${{ github.event.pull_request.head.sha || github.event.issue.pull_request.head.sha }}"
+        run: |
+          echo "${{ github.event.pull_request.head.sha || github.event.issue.pull_request.head.sha }}"
+          echo "${{ github.base_ref}} -- ${{ github.head_ref }} -- ${{ github.ref }}"
+          echo "${{ toJSON(github.event.pull_request) }}"
 
   run-commands:
     if: ${{ (github.head_ref || github.ref_name) != 'development' }}
