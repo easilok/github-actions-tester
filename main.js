@@ -1,11 +1,11 @@
 
 console.log("Hello")
 console.log("World!")
-var chucknorrisAPI = require('@apiverve/chucknorris');
-var api = new chucknorrisAPI({
-    api_key: "123",
-    secure: true //(Optional, defaults to true)
-});
+// var chucknorrisAPI = require('@apiverve/chucknorris');
+// var api = new chucknorrisAPI({
+//     api_key: "123",
+//     secure: true //(Optional, defaults to true)
+// });
 
 
 
