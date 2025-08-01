@@ -1,56 +1,21 @@
 name: Pull Request CI Runner
 
 on:
-  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - run-actions
   pull_request:
     types:
       - review_requested
-      - synchronize # Ensures the trigger for a PR workflow is issued to link the comment and dispatch one
-  issue_comment:
-    types:
-      - created
 
 jobs:
-  check-trigger:
-    runs-on: ubuntu-latest
-    outputs:
-      run_ci: ${{ steps.evaluate.outputs.run_ci }}
-    steps:
-      - name: Evaluate trigger for running
-        id: evaluate
-        run: |
-          # Default to not skip full pipeline
-          echo "run_ci=false" >> $GITHUB_OUTPUT
-
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "Review requested — proceeding with CI"
-            echo "run_ci=true" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "Manual Triggered — proceeding with CI"
-            echo "run_ci=true" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "issue_comment" ]]; then
-            # Ensure it's on a PR
-            echo "Event PR content: ${{ github.event.issue.pull_request }}"
-            if [[ "${{ github.event.issue.pull_request }}" != "" ]]; then
-              # Check for the trigger command comments
-              if [[ "${{ github.event.comment.body }}" == *"/run-actions"* ]]; then
-                echo "Trigger comment detected — proceeding with CI"
-                echo "run_ci=true" >> $GITHUB_OUTPUT
-              fi
-            fi
-          fi
-
   run-tests:
-    needs: check-trigger
-    if: needs.check-trigger.outputs.run_ci == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Run tests
         run: echo "Running tests..."
 
   check-fixups:
-    needs: check-trigger
-    if: needs.check-trigger.outputs.run_ci == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Check for fixup commits
