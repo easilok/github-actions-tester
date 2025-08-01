@@ -1,0 +1,11 @@
+name: Pull Request CI Runner
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  run-pr-workflow:
+    if: contains(github.event.pull_request.labels.*.name, 'run-actions')
+    uses: ./.github/workflows/pull-request-ci.yml
